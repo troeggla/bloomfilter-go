@@ -1,3 +1,5 @@
 syntax: glob
 
 bloomfilter
+*.swp
+.DS_Store

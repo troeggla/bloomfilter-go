@@ -12,7 +12,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	filter := NewBloomFilter(8)
+	num_hashes, _ := OptimalNumHashes(5163)
+	filter := NewBloomFilter(num_hashes)
 
 	file, _ := os.Open(os.Args[1])
 	scanner := bufio.NewScanner(file)
