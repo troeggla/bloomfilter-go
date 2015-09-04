@@ -16,6 +16,24 @@ func NewBloomFilter(num_hashes int) *BloomFilter {
 	return &filter
 }
 
+func OptimalNumHashes(num_elems int) (int, float64) {
+	var previous float64 = 1
+	k := 1
+
+	for k <= 1000 {
+		falsePositive := falsePositiveRate(num_elems, 65536, k)
+
+		if previous < falsePositive {
+			break
+		}
+
+		previous = falsePositive
+		k++
+	}
+
+	return k - 1, previous
+}
+
 func falsePositiveRate(n, m, k int) float64 {
 	exp := math.Exp(float64(-k*n) / float64(m))
 	return math.Pow(1-exp, float64(k))
