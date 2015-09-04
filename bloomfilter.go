@@ -16,6 +16,11 @@ func NewBloomFilter(num_hashes int) *BloomFilter {
 	return &filter
 }
 
+func falsePositiveRate(n, m, k int) float64 {
+	exp := math.Exp(float64(-k*n) / float64(m))
+	return math.Pow(1-exp, float64(k))
+}
+
 func (filter *BloomFilter) AddElement(str string) {
 	indices := filter.getIndices([]byte(str))
 
@@ -70,9 +75,7 @@ func (filter *BloomFilter) GetEmpty() int {
 
 func (filter *BloomFilter) FalsePositiveRate() float64 {
 	n, m, k := filter.CountElements(), len(filter.bitmap), filter.num_hashes
-	exp := math.Exp(float64(-k*n) / float64(m))
-
-	return math.Pow(1-exp, float64(k))
+	return falsePositiveRate(n, m, k)
 }
 
 func (filter *BloomFilter) getIndices(arr []byte) []uint16 {
