@@ -6,8 +6,10 @@ import (
 	"math"
 )
 
+const BITMAP_SIZE = 65536
+
 type BloomFilter struct {
-	bitmap     [65536]int
+	bitmap     [BITMAP_SIZE]int
 	num_hashes int
 }
 
@@ -21,7 +23,7 @@ func OptimalNumHashes(num_elems int) (int, float64) {
 	k := 1
 
 	for k <= 1000 {
-		falsePositive := falsePositiveRate(num_elems, 65536, k)
+		falsePositive := falsePositiveRate(num_elems, BITMAP_SIZE, k)
 
 		if previous < falsePositive {
 			break
